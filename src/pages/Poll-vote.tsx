@@ -20,7 +20,7 @@ export default function PollVote() {
 
   const { pollsDataUpdate } = useBlockchain();
 
-  const pollChainContract = getContract();
+  const {pollChainContract} = getContract();
 
   const [poll, setPollData] = useState<Poll | undefined>();
   const [totalPolls, setTotalPolls] = useState<number>(0);

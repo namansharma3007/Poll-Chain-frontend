@@ -1,40 +1,82 @@
 import { ethers } from "ethers";
 import POLL_CHAIN_JSON from "../contracts/PollChain.json";
 
-const provider = new ethers.JsonRpcProvider("http://localhost:8545");
-let pollChainContract: ethers.Contract;
+// const provider2 = new ethers.JsonRpcProvider("http://localhost:8545");
+// let pollChainContract: ethers.Contract;
 
-const privateKey = import.meta.env.VITE_PRIVATE_KEY;
+// const privateKey = import.meta.env.VITE_PRIVATE_KEY;
+
 const contractAddress = import.meta.env.VITE_CONTRACT_ADDRESS;
 
-export const initEthers = async (): Promise<string> => {
+let provider: ethers.BrowserProvider | null = null;
+let signer: ethers.JsonRpcSigner | null = null;
+
+export const initEthers = async (): Promise<boolean> => {
+  if (typeof window.ethereum === "undefined") return false;
   try {
-    if (!privateKey || !contractAddress) {
-      throw new Error("Missing environment variables");
-    }
-    const wallet = new ethers.Wallet(privateKey, provider);
-    pollChainContract = new ethers.Contract(
-      contractAddress,
-      POLL_CHAIN_JSON.abi,
-      wallet
-    );
-    return wallet.address;
-  } catch (error: any) {
-    throw error;
+    provider = new ethers.BrowserProvider(window.ethereum);
+    await provider.send("eth_requestAccounts", []);
+    signer = await provider.getSigner();
+    return true;
+  } catch (err) {
+    console.error("Provider initialization failed:", err);
+    return false;
   }
 };
+// export const initEthers2 = async (): Promise<string> => {
+//   try {
+//     if (!privateKey || !contractAddress) {
+//       throw new Error("Missing environment variables");
+//     }
+//     const wallet = new ethers.Wallet(privateKey, provider);
+//     pollChainContract = new ethers.Contract(
+//       contractAddress,
+//       POLL_CHAIN_JSON.abi,
+//       wallet
+//     );
+//     return wallet.address;
+//   } catch (error: any) {
+//     throw error;
+//   }
+// };
 
 export const connectToWallet = async (): Promise<string> => {
   try {
-    const wallet = new ethers.Wallet(privateKey, provider);
-    return wallet.address;
-  } catch (error: any) {
-    throw error;
+    if (!window.ethereum) throw new Error("No Ethereum provider");
+    const accounts = await window.ethereum.request({
+      method: "eth_requestAccounts",
+    });
+    await initEthers();
+    return accounts[0];
+  } catch (err) {
+    console.error("Wallet connection failed:", err);
+    throw err;
   }
 };
+export const disconnectWallet = () => {
+  provider = null;
+  signer = null;
+};
+
+export const getWalletAddress = async () => {
+  if (!signer) throw new Error("No signer found");
+  return await signer.getAddress();
+};
+
+// export const connectToWallet2 = async (): Promise<string> => {
+//   try {
+//     const wallet = new ethers.Wallet(privateKey, provider);
+//     return wallet.address;
+//   } catch (error: any) {
+//     throw error;
+//   }
+// };
 
 export const getContract = () => {
-  return pollChainContract;
+  if (!signer) throw new Error("Signer not initialized");
+  return {
+    pollChainContract: new ethers.Contract(contractAddress, POLL_CHAIN_JSON.abi, signer),
+  };
 };
 
 const convertPollDetailsToPoll = (pollDetails: any): Poll => {
@@ -59,7 +101,7 @@ export const blockchainServices = {
     optionTexts: string[],
     deadline: number
   ) => {
-    if (!pollChainContract) throw new Error("Contract not initialized");
+    const { pollChainContract } = getContract();
     try {
       const tx = await pollChainContract.createPoll(
         title,
@@ -78,7 +120,7 @@ export const blockchainServices = {
   },
 
   vote: async (pollId: number, chosenOption: number) => {
-    if (!pollChainContract) throw new Error("Contract not initialized");
+    const { pollChainContract } = getContract();
     try {
       const tx = await pollChainContract.vote(pollId, chosenOption);
       await tx.wait();
@@ -91,7 +133,7 @@ export const blockchainServices = {
   },
 
   deletePoll: async (pollId: number) => {
-    if (!pollChainContract) throw new Error("Contract not initialized");
+    const { pollChainContract } = getContract();
     try {
       const tx = await pollChainContract.deletePoll(pollId);
       await tx.wait(); // Wait for the transaction to be mined
@@ -104,7 +146,7 @@ export const blockchainServices = {
   },
 
   getPoll: async (pollId: number): Promise<Poll> => {
-    if (!pollChainContract) throw new Error("Contract not initialized");
+    const { pollChainContract } = getContract();
     try {
       const pollDetails = await pollChainContract.getPoll(pollId);
       return convertPollDetailsToPoll(pollDetails);
@@ -115,9 +157,9 @@ export const blockchainServices = {
       throw new Error(`Failed to fetch poll: ${error.message}`);
     }
   },
-  
+
   getAllPolls: async (start: number, limit: number): Promise<Poll[]> => {
-    if (!pollChainContract) throw new Error("Contract not initialized");
+    const { pollChainContract } = getContract();
     try {
       const polls = await pollChainContract.getAllPolls(start, limit);
       return polls.map(convertPollDetailsToPoll);
@@ -130,7 +172,7 @@ export const blockchainServices = {
   },
 
   getUserPolls: async (): Promise<Poll[]> => {
-    if (!pollChainContract) throw new Error("Contract not initialized");
+    const { pollChainContract } = getContract();
     try {
       const polls = await pollChainContract.getUserPolls();
       return polls.map(convertPollDetailsToPoll);
@@ -142,9 +184,8 @@ export const blockchainServices = {
     }
   },
 
-
   getActivePollsCount: async (): Promise<number> => {
-    if (!pollChainContract) throw new Error("Contract not initialized");
+    const { pollChainContract } = getContract();
     try {
       const count = await pollChainContract.getActivePollsCount();
       return Number(count);
@@ -157,7 +198,7 @@ export const blockchainServices = {
   },
 
   getAllPollsCount: async (): Promise<number> => {
-    if (!pollChainContract) throw new Error("Contract not initialized");
+    const { pollChainContract } = getContract();
     try {
       const count = await pollChainContract.getAllPollsCount();
       return Number(count);
@@ -170,7 +211,7 @@ export const blockchainServices = {
   },
 
   getVotesCasted: async (): Promise<number> => {
-    if (!pollChainContract) throw new Error("Contract not initialized");
+    const { pollChainContract } = getContract();
     try {
       const count = await pollChainContract.getVotesCasted();
       return Number(count);
@@ -183,7 +224,7 @@ export const blockchainServices = {
   },
 
   getPollsVotedByUser: async (): Promise<number> => {
-    if (!pollChainContract) throw new Error("Contract not initialized");
+    const { pollChainContract } = getContract();
     try {
       const count = await pollChainContract.getPollsVotedByUser();
       return Number(count);
@@ -196,7 +237,7 @@ export const blockchainServices = {
   },
 
   getPollsViaAddress: async (address: string): Promise<Poll[]> => {
-    if (!pollChainContract) throw new Error("Contract not initialized");
+    const { pollChainContract } = getContract();
     try {
       const polls = await pollChainContract.getPollsViaAddress(address);
       return polls.map(convertPollDetailsToPoll);
@@ -208,3 +249,18 @@ export const blockchainServices = {
     }
   },
 };
+
+// Wallet Event Listeners
+if (typeof window.ethereum !== "undefined") {
+  window.ethereum.on("accountsChanged", (accounts: string[]) => {
+    if (accounts.length === 0) {
+      disconnectWallet();
+    } else {
+      initEthers();
+    }
+  });
+
+  window.ethereum.on("chainChanged", () => {
+    window.location.reload();
+  });
+}

@@ -6,10 +6,13 @@ import {
   Dispatch,
   SetStateAction,
 } from "react";
+
+
 import {
   blockchainServices,
   connectToWallet,
   initEthers,
+  disconnectWallet
 } from "../services/blockchainServices";
 import { useAuth } from "./AuthContext";
 import toast from "react-hot-toast";
@@ -54,12 +57,15 @@ export const BlockchainProvider = ({
 
   const initialize = async () => {
     try {
-      const wallet = await initEthers();
-      setWalletAddress(wallet);
-      setIsConnected(true);
-      toast("Wallet connected successfully", {
-        icon: "💰",
-      });
+      const connected = await initEthers();
+      if(connected){
+        const wallet = await connectToWallet();
+        setWalletAddress(wallet);
+        toast("Wallet connected successfully", {
+          icon: "💰",
+        });
+        setIsConnected(true);
+      }
     } catch (error: any) {
       setIsConnected(false);
       console.error("Error initializing ethers ", error.message);
@@ -84,6 +90,7 @@ export const BlockchainProvider = ({
   const disconnect = () => {
     setIsConnected(false);
     setWalletAddress(undefined);
+    disconnectWallet();
   };
 
   const getUserPolls = async () => {
@@ -145,6 +152,29 @@ export const BlockchainProvider = ({
       disconnect();
     }
   }, [isConnected]);
+
+  useEffect(() => {
+    if (!window.ethereum) return;
+
+    const handleAccountsChanged = (accounts: string[]) => {
+      if (accounts.length === 0) {
+        setWalletAddress(undefined);
+        setIsConnected(false);
+      } else {
+        setWalletAddress(accounts[0]);
+      }
+    };
+
+    const handleChainChanged = () => window.location.reload();
+
+    window.ethereum.on("accountsChanged", handleAccountsChanged);
+    window.ethereum.on("chainChanged", handleChainChanged);
+
+    return () => {
+      window.ethereum.removeListener("accountsChanged", handleAccountsChanged);
+      window.ethereum.removeListener("chainChanged", handleChainChanged);
+    };
+  }, []);
 
   useEffect(() => {
     if (user) {

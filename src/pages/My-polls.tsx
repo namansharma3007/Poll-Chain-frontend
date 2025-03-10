@@ -17,7 +17,7 @@ export default function MyPolls() {
     getUserPolls,
   } = useBlockchain();
   
-  const pollChainContract = getContract();
+  const {pollChainContract} = getContract();
 
   const [activePollsFilter, setIsActivePollsFilter] = useState<number>(0);
   const [displayPolls, setDisplayPolls] = useState<Poll[]>([]);
