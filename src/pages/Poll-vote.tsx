@@ -66,7 +66,6 @@ export default function PollVote() {
       toast.error(flag.message);
       return;
     }
-    console.log(pollForm);
 
     try {
       const vote = (): Promise<number> => {
@@ -77,7 +76,7 @@ export default function PollVote() {
               pollForm.chosenOption!
             );
 
-            pollChainContract.once("Voted", (pollId: BigNumberish | BigInt) => {
+            pollChainContract.on("Voted", (pollId: BigNumberish | BigInt) => {
               if (!pollId) {
                 reject(new Error("Voted event did not return a pollId"));
               } else {
@@ -101,6 +100,8 @@ export default function PollVote() {
         error:
           "Some error occurred while voting in poll, Please try again later",
       });
+      
+      pollChainContract.off("Voted");
 
       if (!pollIdNew) return;
 
