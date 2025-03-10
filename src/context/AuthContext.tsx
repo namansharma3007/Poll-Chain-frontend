@@ -45,6 +45,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
           if (refreshResponse.success) {
             setUser(refreshResponse.data.user);
           } else {
+            setUser(undefined)
             toast.error("Session expired, Login again");
           }
         }
