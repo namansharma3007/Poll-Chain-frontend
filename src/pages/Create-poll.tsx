@@ -1,11 +1,9 @@
 import { Trash2 } from "lucide-react";
-import { BigNumberish } from "ethers";
 import React, { useState } from "react";
 import toast from "react-hot-toast";
 import { useBlockchain } from "../context/BlockchainContext";
 import {
   blockchainServices,
-  getContract,
 } from "../services/blockchainServices";
 
 import NoWalletError from "../components/NoWalletError";
@@ -18,10 +16,8 @@ type CreatePollForm = {
 };
 
 export default function CreatePoll() {
-  const { setGlobalPolls, setUserPolls, walletAddress, pollsDataUpdate } =
+  const { walletAddress, pollsDataUpdate } =
     useBlockchain();
-
-  const pollChainContract = getContract();
 
   const [createPollForm, setCreatePollForm] = useState<CreatePollForm>({
     title: "",

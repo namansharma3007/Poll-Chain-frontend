@@ -3,8 +3,6 @@ import toast from "react-hot-toast";
 import { Link } from "react-router";
 import { convertDate } from "../utils/utils";
 import { oneDayMilliseconds } from "../constants/constants";
-import { useEffect, useState } from "react";
-import { blockchainServices } from "../services/blockchainServices";
 
 export default function PollCard({
   poll,
