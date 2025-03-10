@@ -13,8 +13,6 @@ export default function PollCard({
   deletePoll: Function;
   deleteFlag: boolean;
 }) {
-
-
   const copyToClipboard = (creatorsAddress: string) => {
     navigator.clipboard.writeText(creatorsAddress);
     toast("Address copied to clipboard", {
@@ -87,37 +85,45 @@ export default function PollCard({
         </div>
       </div>
 
-      <div className="flex text-sm font-semibold text-gray-400 justify-between mt-2">
-        <span>Created at: {convertDate(poll.createdAt * 1000)}</span>
-        <span>Deadline: {convertDate(poll.deadline - oneDayMilliseconds)}</span>
-      </div>
+      <div className="flex flex-col gap-2 mt-2">
+        <div className="flex text-sm font-semibold text-gray-400 justify-between">
+          <span>Created at: {convertDate(poll.createdAt * 1000)}</span>
+          <span>
+            Deadline: {convertDate(poll.deadline - oneDayMilliseconds)}
+          </span>
+        </div>
 
-      <div
-        className={`flex items-center mt-2 ${
-          deleteFlag ? "justify-between" : "justify-end"
-        }`}
-      >
-        <Link
-          to={(isPollActive && !poll.hasAlreadyVoted) ? `/poll-vote/${poll.id}` : "#"}
-          aria-disabled={!isPollActive || poll.hasAlreadyVoted}
-          className={`flex text-xs items-center justify-center gap-2 px-4 py-2 rounded-lg text-white ${
-            isPollActive
-              ? "bg-purple-600 hover:bg-purple-700"
-              : "bg-gray-600 cursor-not-allowed"
+        <div
+          className={`flex items-center mt-2 ${
+            deleteFlag ? "justify-between" : "justify-end"
           }`}
         >
-          <Vote size={15} />
-          Vote
-        </Link>
-        {deleteFlag && (
-          <button
-            onClick={() => deletePoll(poll.id)}
-            className="flex text-xs items-center justify-center gap-2 px-4 py-2 rounded-lg text-white bg-red-600 hover:bg-red-700"
+          <Link
+            to={
+              isPollActive && !poll.hasAlreadyVoted
+                ? `/poll-vote/${poll.id}`
+                : "#"
+            }
+            aria-disabled={!isPollActive || poll.hasAlreadyVoted}
+            className={`flex text-xs items-center justify-center gap-2 px-4 py-2 rounded-lg text-white ${
+              isPollActive
+                ? "bg-purple-600 hover:bg-purple-700"
+                : "bg-gray-600 cursor-not-allowed"
+            }`}
           >
-            <Trash2 size={15} />
-            Delete
-          </button>
-        )}
+            <Vote size={15} />
+            Vote
+          </Link>
+          {deleteFlag && (
+            <button
+              onClick={() => deletePoll(poll.id)}
+              className="flex text-xs items-center justify-center gap-2 px-4 py-2 rounded-lg text-white bg-red-600 hover:bg-red-700"
+            >
+              <Trash2 size={15} />
+              Delete
+            </button>
+          )}
+        </div>
       </div>
     </div>
   );
