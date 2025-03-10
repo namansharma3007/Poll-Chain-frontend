@@ -4,7 +4,7 @@ A decentralized web application built with modern technologies that enables user
 
 ## Backend Repository
 
-The backend for this project is managed separately. It provides all the necessary API endpoints and handles authentication, poll management, and file uploads.
+The backend for this project is managed separately. It provides all the necessary API endpoints and handles authentication, session management and file uploads.
 
 Check out the backend repository here: https://github.com/namansharma3007/Poll-Chain-Backend
 
