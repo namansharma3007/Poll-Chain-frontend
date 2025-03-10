@@ -8,12 +8,12 @@ import { BlockchainProvider } from "./context/BlockchainContext.tsx";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    <AuthProvider>
-      <BlockchainProvider>
-        <BrowserRouter>
+    <BrowserRouter>
+      <AuthProvider>
+        <BlockchainProvider>
           <App />
-        </BrowserRouter>
-      </BlockchainProvider>
-    </AuthProvider>
+        </BlockchainProvider>
+      </AuthProvider>
+    </BrowserRouter>
   </StrictMode>
 );
