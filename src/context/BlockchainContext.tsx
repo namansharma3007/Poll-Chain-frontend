@@ -148,6 +148,7 @@ export const BlockchainProvider = ({
   useEffect(() => {
     if (isConnected && user) {
       pollsDataUpdate();
+      getUserPolls();
     } else if(!isConnected){
       disconnect();
     }
