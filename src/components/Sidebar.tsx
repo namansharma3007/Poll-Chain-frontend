@@ -96,7 +96,7 @@ export default function Sidebar() {
     <>
       <div
         className={`
-        fixed inset-0 z-20 transition-opacity bg-black bg-opacity-30 
+        fixed md:hidden inset-0 z-20 transition-opacity bg-black bg-opacity-30 
         ${
           isOpen
             ? "opacity-100 ease-out duration-300"
