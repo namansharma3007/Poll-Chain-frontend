@@ -13,7 +13,7 @@ type EditValues = {
 
 export default function Settings() {
   const { walletAddress, disconnect, connectWallet } = useBlockchain();
-  const { user, logout } = useAuth();
+  const { user, logout, setUser } = useAuth();
 
   const [editFormValues, setEditFormValues] = useState<EditValues>({
     username: "",
@@ -100,10 +100,8 @@ export default function Settings() {
         throw new Error(response.message);
       }
       toast.success(response.message);
+      setUser(response.data.user);
       toast.success("Reloading page...");
-      setTimeout(() => {
-        window.location.reload();
-      }, 3000);
     } catch (error: any) {
       toast.error(error.message);
     } finally {
