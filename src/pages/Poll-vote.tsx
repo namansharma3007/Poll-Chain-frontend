@@ -76,17 +76,7 @@ export default function PollVote() {
               pollForm.chosenOption!
             );
 
-            pollChainContract.on("Voted", (pollId: BigNumberish | BigInt) => {
-              if (!pollId) {
-                reject(new Error("Voted event did not return a pollId"));
-              } else {
-                resolve(Number(pollId));
-              }
-            });
-
-            setTimeout(() => {
-              reject(new Error("Timeout waiting for PollCreated event"));
-            }, 30000); // 30 seconds timeout
+            resolve(Number(pollForm.pollId));
           } catch (error: any) {
             console.error("Error voting in poll", error.message);
             reject(error);
@@ -101,7 +91,7 @@ export default function PollVote() {
           "Some error occurred while voting in poll, Please try again later",
       });
       
-      pollChainContract.off("Voted");
+     
 
       if (!pollIdNew) return;
 

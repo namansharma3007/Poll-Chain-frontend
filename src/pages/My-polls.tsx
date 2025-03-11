@@ -4,9 +4,7 @@ import toast from "react-hot-toast";
 import { useBlockchain } from "../context/BlockchainContext";
 import { blockchainServices } from "../services/blockchainServices";
 import PollCard from "../components/PollCard";
-import { getContract } from "../services/blockchainServices";
 import NoWalletError from "../components/NoWalletError";
-import { BigNumberish } from "ethers";
 
 export default function MyPolls() {
   const {
@@ -17,7 +15,6 @@ export default function MyPolls() {
     getUserPolls,
   } = useBlockchain();
   
-  const {pollChainContract} = getContract();
 
   const [activePollsFilter, setIsActivePollsFilter] = useState<number>(0);
   const [displayPolls, setDisplayPolls] = useState<Poll[]>([]);
@@ -62,20 +59,7 @@ export default function MyPolls() {
         try {
           await blockchainServices.deletePoll(id);
 
-          pollChainContract.on(
-            "PollDeleted",
-            (pollId: BigNumberish | BigInt) => {
-              if (!pollId) {
-                reject(new Error("PollDeleted event did not return a pollId"));
-              } else {
-                resolve(Number(pollId));
-              }
-            }
-          );
-
-          setTimeout(() => {
-            reject(new Error("Timeout waiting for PollDeleted event"));
-          }, 30000); // 30 seconds timeout
+          resolve(id);
         } catch (error: any) {
           console.error("Error deleting poll:", error.message);
           reject(error);
@@ -89,7 +73,6 @@ export default function MyPolls() {
       error: "Some error occurred, Please refresh page and check once before deleting a poll again",
     });
 
-    pollChainContract.off("PollDeleted");
 
     setUserPolls((prev) => prev.filter((p) => p.id !== deletedPollId));
     pollsDataUpdate();

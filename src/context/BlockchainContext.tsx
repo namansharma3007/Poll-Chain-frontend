@@ -7,12 +7,11 @@ import {
   SetStateAction,
 } from "react";
 
-
 import {
   blockchainServices,
   connectToWallet,
   initEthers,
-  disconnectWallet
+  disconnectWallet,
 } from "../services/blockchainServices";
 import { useAuth } from "./AuthContext";
 import toast from "react-hot-toast";
@@ -58,7 +57,7 @@ export const BlockchainProvider = ({
   const initialize = async () => {
     try {
       const connected = await initEthers();
-      if(connected){
+      if (connected) {
         const wallet = await connectToWallet();
         setWalletAddress(wallet);
         toast("Wallet connected successfully", {
@@ -143,13 +142,13 @@ export const BlockchainProvider = ({
     getActivePolls();
     getTotalPolls();
     getVotesCasted();
-  }
+  };
 
   useEffect(() => {
     if (isConnected && user) {
       pollsDataUpdate();
       getUserPolls();
-    } else if(!isConnected){
+    } else if (!isConnected) {
       disconnect();
     }
   }, [isConnected]);
