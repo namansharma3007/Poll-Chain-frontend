@@ -101,7 +101,11 @@ export default function Settings() {
       }
       toast.success(response.message);
       setUser(response.data.user);
-      toast.success("Reloading page...");
+      setEditFormValues({
+        username: "",
+        email: "",
+        avatar: undefined,
+      });
     } catch (error: any) {
       toast.error(error.message);
     } finally {
