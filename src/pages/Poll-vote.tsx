@@ -7,7 +7,6 @@ import {
 import toast from "react-hot-toast";
 import { oneDayMilliseconds } from "../constants/constants";
 import { convertDate } from "../utils/utils";
-import { BigNumberish } from "ethers";
 import { useBlockchain } from "../context/BlockchainContext";
 
 type PollForm = {
@@ -19,8 +18,6 @@ export default function PollVote() {
   const { pollId } = useParams<{ pollId?: string }>();
 
   const { pollsDataUpdate } = useBlockchain();
-
-  const {pollChainContract} = getContract();
 
   const [poll, setPollData] = useState<Poll | undefined>();
   const [totalPolls, setTotalPolls] = useState<number>(0);

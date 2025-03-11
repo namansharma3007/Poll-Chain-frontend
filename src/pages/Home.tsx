@@ -1,28 +1,24 @@
 import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router";
 import { useAuth } from "../context/AuthContext";
-import { Github, Linkedin, LogOut, Twitter } from "lucide-react";
+import { Github, Linkedin, LogOut, Twitter, Link as L } from "lucide-react";
 import toast from "react-hot-toast";
-import { ShieldHalf, Globe, Zap } from "lucide-react";
 
-const cards = [
+const links = [
   {
-    icon: <ShieldHalf size={20} className="text-purple-400" />,
-    title: "Secure Voting",
-    description:
-      "Every vote is securely recorded on the blockchain, ensuring complete transparency and immutability.",
+    icon: <Twitter size={18} />,
+    link: "https://x.com/_namansharma_07",
+    title: "Twitter",
   },
   {
-    icon: <Globe size={20} className="text-purple-400" />,
-    title: "Global Access",
-    description:
-      "Create and participate in polls from anywhere in the world with just a Web3 wallet.",
+    icon: <Linkedin size={18} />,
+    link: "https://www.linkedin.com/in/naman-sharma-b46950226/",
+    title: "LinkedIn",
   },
   {
-    icon: <Zap size={20} className="text-purple-400" />,
-    title: "Real-time Results",
-    description:
-      "Watch live as results update instantly when votes are cast and recorded on-chain.",
+    icon: <Github size={18} />,
+    link: "https://github.com/namansharma3007/Poll-Chain-frontend",
+    title: "GitHub",
   },
 ];
 
@@ -132,7 +128,7 @@ export default function Home() {
 
   return (
     <>
-      <section className="min-h-[95vh] h-max flex flex-col bg-gradient-to-br from-[#0a0520] to-[#130749] relative overflow-hidden">
+      <section className="min-h-screen h-max flex flex-col bg-gradient-to-br from-[#0a0520] to-[#130749] relative overflow-hidden">
         <canvas
           ref={canvasRef}
           className="absolute inset-0 w-full h-full opacity-50"
@@ -206,57 +202,37 @@ export default function Home() {
               </Link>
             </div>
           </main>
-        </div>
-      </section>
 
-      <section className="h-max min-h-[0vh] grid justify-center md:grid-cols-3 grid-cols-1 gap-6 p-10 bg-gray-900">
-        {cards.map((item, index) => (
-          <div
-            key={index}
-            className="flex flex-col flex-1 gap-4 p-6 bg-gray-800 w-full max-w-[460px] rounded-xl border border-gray-700 h-max"
-          >
-            <span className="bg-purple-600 p-4 bg-opacity-40 rounded-xl w-max">
-              {item.icon}
-            </span>
-            <div className="flex flex-col gap-3">
-              <h5 className="font-semibold text-lg text-white">{item.title}</h5>
-              <p className="font-semibold text-gray-400">{item.description}</p>
+          <footer className="absolute right-10 text-white">
+            <div className="relative group inline-block">
+              <div className="p-1 rounded-full bg-white cursor-pointer z-10 relative">
+                <div className="p-3 hover:bg-purple-700 hover:text-white text-purple-600 rounded-full">
+                  <L size={18} />
+                </div>
+              </div>
+              <div className="absolute bottom-0 right-0 flex gap-2 p-1 bg-white rounded-full opacity-0 group-hover:opacity-100 transition-all duration-300 ease-in-out translate-x-full group-hover:translate-x-0">
+                {links.map((link, index) => (
+                  <a
+                    key={index}
+                    href={link.link}
+                    target="_blank"
+                    rel="noreferrer"
+                    data-title={link.title}
+                    className="p-3 rounded-full hover:bg-purple-600 hover:text-white text-purple-700 relative
+                             after:content-[attr(data-title)] after:absolute after:-top-8 after:left-1/2 
+                             after:-translate-x-1/2 after:bg-gray-800 after:text-white after:text-xs 
+                             after:px-2 after:py-1 after:rounded-md after:opacity-0 after:transition-opacity
+                             hover:after:opacity-100 after:pointer-events-none"
+                  >
+                    {link.icon}
+                  </a>
+                ))}
+                <div className="p-3 ml-4"></div>
+              </div>
             </div>
-          </div>
-        ))}
-      </section>
-
-      <footer className="flex p-8 items-center justify-center bg-gray-800">
-        <div className="flex flex-col gap-2 justify-center items-center">
-          <p className="text-lg font-semibold text-purple-600">Poll Chain</p>
-          <div className="flex gap-4 p-2">
-            <a
-              href="https://x.com/_namansharma_07"
-              target="_blank"
-              rel="noreferrer"
-            >
-              <Twitter size={18} className="text-gray-400" />
-            </a>
-            <a
-              href="https://www.linkedin.com/in/naman-sharma-b46950226/"
-              target="_blank"
-              rel="noreferrer"
-            >
-              <Linkedin size={18} className="text-gray-400" />
-            </a>
-            <a
-              href="https://github.com/namansharma3007/Poll-Chain-frontend"
-              target="_blank"
-              rel="noreferrer"
-            >
-              <Github size={18} className="text-gray-400" />
-            </a>
-          </div>
-          <p className="text-gray-200 font-semibold">
-            &copy; {new Date().getFullYear()} Poll-Chain. All rights reserved.
-          </p>
+          </footer>
         </div>
-      </footer>
+      </section>
     </>
   );
 }
