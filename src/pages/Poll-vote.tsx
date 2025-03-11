@@ -1,8 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router";
-import {
-  blockchainServices,
-} from "../services/blockchainServices";
+import { blockchainServices } from "../services/blockchainServices";
 import toast from "react-hot-toast";
 import { oneDayMilliseconds } from "../constants/constants";
 import { convertDate } from "../utils/utils";
@@ -86,8 +84,6 @@ export default function PollVote() {
         error:
           "Some error occurred while voting in poll, Please try again later",
       });
-      
-     
 
       if (!pollIdNew) return;
 
@@ -112,6 +108,10 @@ export default function PollVote() {
       if (!nPoll) return;
 
       setPollData(nPoll);
+      setTotalPolls(
+        nPoll.optionVotes.reduce((vote: number, sum: number) => vote + sum, 0)
+      );
+
       setPollForm({
         ...pollForm,
         chosenOption: undefined,
