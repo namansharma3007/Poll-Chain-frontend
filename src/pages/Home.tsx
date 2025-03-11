@@ -230,18 +230,24 @@ export default function Home() {
         <div className="flex flex-col gap-2 justify-center items-center">
           <p className="text-lg font-semibold text-purple-600">Poll Chain</p>
           <div className="flex gap-4 p-2">
-            <a href="https://x.com/_namansharma_07" target="_blank">
+            <a
+              href="https://x.com/_namansharma_07"
+              target="_blank"
+              rel="noreferrer"
+            >
               <Twitter size={18} className="text-gray-400" />
             </a>
             <a
               href="https://www.linkedin.com/in/naman-sharma-b46950226/"
               target="_blank"
+              rel="noreferrer"
             >
               <Linkedin size={18} className="text-gray-400" />
             </a>
             <a
               href="https://github.com/namansharma3007/Poll-Chain-frontend"
               target="_blank"
+              rel="noreferrer"
             >
               <Github size={18} className="text-gray-400" />
             </a>
