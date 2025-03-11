@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router";
 import {
   blockchainServices,
-  getContract,
 } from "../services/blockchainServices";
 import toast from "react-hot-toast";
 import { oneDayMilliseconds } from "../constants/constants";
