@@ -2,6 +2,10 @@
 
 A decentralized web application built with modern technologies that enables users to create and manage polls on a blockchain. Users can vote on polls (one vote per poll), search and browse through polls, and delete them when needed. This project leverages both Web3 technologies and traditional web development practices to deliver a seamless and secure experience.
 
+## YouTube Video
+
+[Poll-Chain Demo Video](https://youtu.be/ZTAqtFRy1yk)
+
 ## Backend Repository
 
 The backend for this project is managed separately. It provides all the necessary API endpoints and handles authentication, session management and file uploads.
