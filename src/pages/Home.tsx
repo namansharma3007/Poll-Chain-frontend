@@ -210,7 +210,7 @@ export default function Home() {
                   <L size={18} />
                 </div>
               </div>
-              <div className="absolute bottom-0 right-0 flex gap-2 p-1 bg-white rounded-full opacity-0 group-hover:opacity-100 transition-all duration-300 ease-in-out translate-x-full group-hover:translate-x-0">
+              <div className="absolute bottom-0 right-0 flex gap-2 p-1 bg-white rounded-full transition-all duration-300 ease-in-out opacity-0 group-hover:opacity-100 translate-x-full group-hover:translate-x-0">
                 {links.map((link, index) => (
                   <a
                     key={index}
