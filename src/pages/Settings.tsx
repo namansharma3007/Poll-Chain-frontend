@@ -68,7 +68,7 @@ export default function Settings() {
       if (!response.success) {
         throw new Error(response.message);
       }
-      toast.success(response.success);
+      toast.success(response.message);
     } catch (error: any) {
       toast.error(error.message);
     } finally {
