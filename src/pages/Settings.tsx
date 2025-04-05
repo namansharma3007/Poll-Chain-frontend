@@ -13,7 +13,7 @@ type EditValues = {
 
 export default function Settings() {
   const { walletAddress, disconnect, connectWallet } = useBlockchain();
-  const { user, logout, setUser } = useAuth();
+  const { user, logout, setUser, loadingLogout } = useAuth();
 
   const [editFormValues, setEditFormValues] = useState<EditValues>({
     username: "",
@@ -292,14 +292,14 @@ export default function Settings() {
         <div className="flex p-2 w-full justify-end">
           <button
             onClick={logoutUser}
-            disabled={isLoadingLogout}
+            disabled={loadingLogout}
             className={`flex items-center justify-center gap-2 text-sm text-white font-semibold px-6 py-2 rounded-lg w-max ${
-              isLoadingLogout
+              loadingLogout
                 ? "cursor-not-allowed bg-red-900"
                 : "cursor-pointer bg-red-600 hover:bg-red-700"
             }`}
           >
-            {isLoadingLogout ? (
+            {loadingLogout ? (
               <div className="flex justify-center items-center">
                 <div className="w-5 h-5 rounded-full border-[3px] border-solid border-gray-900 border-l-transparent animate-spin"></div>
               </div>

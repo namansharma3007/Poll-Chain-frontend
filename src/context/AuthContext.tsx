@@ -25,6 +25,7 @@ type AuthContextType = {
   isOpen: boolean;
   setIsOpen: Dispatch<SetStateAction<boolean>>;
   activeUsers: number;
+  loadingLogout: boolean;
 };
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -33,6 +34,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<User | undefined>();
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [activeUsers, setActiveUsers] = useState<number>(0);
+  const [loadingLogout, setLoadingLogout] = useState<boolean>(false);
 
   useEffect(() => {
     const initializeAuth = async () => {
@@ -112,6 +114,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   const logout = async () => {
+    setLoadingLogout(true);
     try {
       const response = await apiFetch("/auth/logout", {
         method: "POST",
@@ -126,6 +129,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       return response;
     } catch (error: any) {
       throw error;
+    } finally {
+      setLoadingLogout(false);
     }
   };
 
@@ -140,6 +145,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         isOpen,
         setIsOpen,
         activeUsers,
+        loadingLogout
       }}
     >
       {children}

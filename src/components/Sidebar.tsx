@@ -54,7 +54,7 @@ const accountLinks = [
 ];
 
 export default function Sidebar() {
-  const { logout, isOpen, setIsOpen, user } = useAuth();
+  const { logout, isOpen, setIsOpen, user, loadingLogout } = useAuth();
   const { walletAddress, connectWallet } = useBlockchain();
   const [copied, setIsCopied] = useState<boolean>(false);
 
@@ -194,14 +194,14 @@ export default function Sidebar() {
             </div>
             <button
               onClick={logoutUser}
-              disabled={isLoadingLogout}
+              disabled={loadingLogout}
               className={`flex items-center justify-center gap-2 text-sm text-white font-semibold px-4 py-2 rounded-lg w-full ${
-                isLoadingLogout
+                loadingLogout
                   ? "cursor-not-allowed bg-red-900"
                   : "cursor-pointer bg-red-600 hover:bg-red-700"
               }`}
             >
-              {isLoadingLogout ? (
+              {loadingLogout ? (
                 <div className="flex justify-center items-center">
                   <div className="w-5 h-5 rounded-full border-[3px] border-solid border-gray-900 border-l-transparent animate-spin"></div>
                 </div>
