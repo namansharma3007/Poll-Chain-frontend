@@ -21,7 +21,6 @@ export default function Settings() {
     avatar: undefined,
   });
 
-  // const [isLoadingLogout, setIsLoadingLogout] = useState<boolean>(false);
   const [isUpdatingProfile, setIsUpdatingProfile] = useState<boolean>(false);
 
   const disconnectWallet = () => {
@@ -62,7 +61,6 @@ export default function Settings() {
   };
 
   const logoutUser = async () => {
-    // setIsLoadingLogout(true);
     try {
       const response = await logout();
       if (!response.success) {
@@ -71,8 +69,6 @@ export default function Settings() {
       toast.success(response.message);
     } catch (error: any) {
       toast.error(error.message);
-    } finally {
-      // setIsLoadingLogout(false);
     }
   };
 

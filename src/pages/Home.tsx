@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import { Link } from "react-router";
 import { useAuth } from "../context/AuthContext";
 import { Github, Linkedin, LogOut, Twitter, Link as L } from "lucide-react";
@@ -23,10 +23,8 @@ const links = [
 ];
 
 export default function Home() {
-  const { user, logout } = useAuth();
+  const { user, logout, loadingLogout } = useAuth();
   const canvasRef = useRef<HTMLCanvasElement>(null);
-
-  const [isLoadingLogout, setIsLoadingLogout] = useState<boolean>(false);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -112,7 +110,6 @@ export default function Home() {
   }, []);
 
   const logoutUser = async () => {
-    setIsLoadingLogout(true);
     try {
       const response = await logout();
       if (!response.success) {
@@ -121,8 +118,6 @@ export default function Home() {
       toast.success(response.message);
     } catch (error: any) {
       toast.error(error.message);
-    } finally {
-      setIsLoadingLogout(false);
     }
   };
 
@@ -147,14 +142,14 @@ export default function Home() {
                   <p className="font-semibold text-gray-200">{user.username}</p>
                   <button
                     onClick={logoutUser}
-                    disabled={isLoadingLogout}
+                    disabled={loadingLogout}
                     className={`flex items-center justify-center gap-2 text-sm text-white font-semibold px-4 py-2 rounded-lg w-full ${
-                      isLoadingLogout
+                      loadingLogout
                         ? "cursor-not-allowed bg-red-900"
                         : "cursor-pointer bg-red-600 hover:bg-red-700"
                     }`}
                   >
-                    {isLoadingLogout ? (
+                    {loadingLogout ? (
                       <div className="flex justify-center items-center">
                         <div className="w-5 h-5 rounded-full border-[3px] border-solid border-gray-900 border-l-transparent animate-spin"></div>
                       </div>

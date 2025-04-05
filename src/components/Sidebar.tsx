@@ -58,10 +58,8 @@ export default function Sidebar() {
   const { walletAddress, connectWallet } = useBlockchain();
   const [copied, setIsCopied] = useState<boolean>(false);
 
-  // const [isLoadingLogout, setIsLoadingLogout] = useState<boolean>(false);
 
   const logoutUser = async () => {
-    // setIsLoadingLogout(true);
     try {
       const response = await logout();
       if (!response.success) {
@@ -70,8 +68,6 @@ export default function Sidebar() {
       toast.success(response.message);
     } catch (error: any) {
       toast.error(error.message);
-    } finally {
-      // setIsLoadingLogout(false);
     }
   };
 
