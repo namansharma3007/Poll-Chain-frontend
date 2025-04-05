@@ -1,4 +1,9 @@
+<div align="center">
+  <img src="./public/icon.png" height="100" width="100" alt="PollChain"/>
+</div>
+
 # Web3 Polling App - PollChain
+
 
 A decentralized web application built with modern technologies that enables users to create and manage polls on a blockchain. Users can vote on polls (one vote per poll), search and browse through polls, and delete them when needed. This project leverages both Web3 technologies and traditional web development practices to deliver a seamless and secure experience.
 
