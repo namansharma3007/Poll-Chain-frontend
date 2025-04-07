@@ -16,6 +16,7 @@ A decentralized web application built with modern technologies that enables user
 The backend for this project is managed separately. It provides all the necessary API endpoints and handles authentication, session management and file uploads.
 
 Check out the backend repository here: https://github.com/namansharma3007/Poll-Chain-Backend
+Check out the hardhat repository here: https://github.com/namansharma3007/Hardhat-Poll-Chain
 
 
 ## Features
